@@ -116,11 +116,11 @@ void SwerveModule::SetDesiredState(frc::SwerveModuleState& state) {
   frc::SmartDashboard::PutNumber(std::to_string(samTurningMotor->GetDeviceId()), turnOutput);
 
 
-  // Set the motor outputs.
-  // samDriveMotor->Set(driveOutput);
-  samDriveMotor->Set(-0.1);
+  // // Set the motor outputs.
+  // // samDriveMotor->Set(driveOutput);
+  // samDriveMotor->Set(-0.1);
+  // // samTurningMotor->Set(turnOutput);
   // samTurningMotor->Set(turnOutput);
-  samTurningMotor->Set(turnOutput);
 }
 
 // void SwerveModule::ResetEncoders() {

@@ -14,7 +14,7 @@ void ActuatorSubsystem::Periodic() {
 
 void ActuatorSubsystem::Retract(){
  ActuatorMotor->SetVoltage(units::voltage::volt_t(2.0));
- std::cout << "I'm Trying to Retract!" << std::endl;
+//  std::cout << "I'm Trying to Retract!" << std::endl;
     
 }
 
@@ -22,12 +22,12 @@ void ActuatorSubsystem::Extend(){
 ForwardLimitSwitch = ActuatorMotor->GetForwardLimitSwitch(rev::CANDigitalInput::LimitSwitchPolarity::kNormallyClosed).Get();
 
  ActuatorMotor->SetVoltage(units::voltage::volt_t(-3.0));
-  std::cout << "I'm Trying to Extend!" << std::endl;
+  // std::cout << "I'm Trying to Extend!" << std::endl;
 }
 
 void ActuatorSubsystem::Neutral(){
 ForwardLimitSwitch = ActuatorMotor->GetForwardLimitSwitch(rev::CANDigitalInput::LimitSwitchPolarity::kNormallyClosed).Get();   
-  std::cout << "I'm Neutral!" << std::endl;
+  // std::cout << "I'm Neutral!" << std::endl;
  ActuatorMotor->SetVoltage(units::voltage::volt_t(0));
 }
 

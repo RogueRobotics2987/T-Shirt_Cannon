@@ -27,7 +27,7 @@
  */
 
 namespace DriveConstants {
-constexpr int kFrontLeftDriveMotorPort = 1;
+constexpr int kFrontLeftDriveMotorPort = 13;
 constexpr int kRearLeftDriveMotorPort = 7;
 constexpr int kFrontRightDriveMotorPort = 3;
 constexpr int kRearRightDriveMotorPort = 5;
@@ -103,7 +103,7 @@ constexpr double kTurningEncoderDistancePerPulse =
     // Assumes the encoders are directly mounted on the wheel shafts
     (wpi::math::pi * 2) / static_cast<double>(kEncoderCPR);
 
-constexpr double kPModuleTurningController = 0.2;
+constexpr double kPModuleTurningController = 0.5;
 constexpr double kPModuleDriveController = 8;
 // TODO Lower Value of P to 0.0001,  Change Value of p Till its the Highest Without Osilation, 
 }  // namespace ModuleConstants
@@ -115,9 +115,9 @@ using radians_per_second_squared_t =
 
 constexpr auto kMaxSpeed = units::meters_per_second_t(3);
 constexpr auto kMaxAcceleration = units::meters_per_second_squared_t(3);
-constexpr auto kMaxAngularSpeed = units::radians_per_second_t(3.142);
+constexpr auto kMaxAngularSpeed = units::radians_per_second_t(3.142 * 2);
 constexpr auto kMaxAngularAcceleration =
-    units::unit_t<radians_per_second_squared_t>(3.142);
+    units::unit_t<radians_per_second_squared_t>(3.142 * 2);
 
 constexpr double kPXController = 0.5;
 constexpr double kPYController = 0.5;

@@ -2,11 +2,11 @@
 
 
 ShooterSubsystem::ShooterSubsystem(){
-ShooterSolenoid1 = new frc::DoubleSolenoid(0, 1); 
-ShooterSolenoid2 = new frc::DoubleSolenoid(2, 3); 
-ShooterSolenoid3 = new frc::DoubleSolenoid(4, 5); 
-ShooterSolenoid4 = new frc::DoubleSolenoid(6, 7); 
-ShooterSolenoid5 = new frc::DoubleSolenoid(7, 8); 
+ShooterSolenoid1 = new frc::DoubleSolenoid(1, 0, 1); 
+ShooterSolenoid2 = new frc::DoubleSolenoid(1, 2, 3); 
+ShooterSolenoid3 = new frc::DoubleSolenoid(1, 4, 5); 
+ShooterSolenoid4 = new frc::DoubleSolenoid(1, 6, 7); 
+ShooterSolenoid5 = new frc::DoubleSolenoid(1, 7, 8); 
 }
 
 void ShooterSubsystem::Periodic() {}

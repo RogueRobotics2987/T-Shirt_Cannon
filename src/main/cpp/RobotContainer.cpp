@@ -47,7 +47,7 @@ RobotContainer::RobotContainer() {
   },
   {&m_Actuator}));
   m_Compressor.SetDefaultCommand(beginCompressor(&m_Compressor));
-  m_Shooter.SetDefaultCommand(ShooterSafe(&m_Shooter));
+  // m_Shooter.SetDefaultCommand(ShooterSafe(&m_Shooter));
   m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
         //   std::cout << "sea out in robot container" << std::endl;
@@ -86,7 +86,7 @@ RobotContainer::RobotContainer() {
 
 void RobotContainer::ConfigureButtonBindings() {
     frc2::JoystickButton(&m_driverController, 2).WhenPressed(ResetHeading(&m_drive));
-    frc2::JoystickButton(&m_driverController, 1).WhenPressed(Shooter(&m_Shooter));
+    // frc2::JoystickButton(&m_driverController, 1).WhenPressed(Shooter(&m_Shooter));
 //       [this] {
 //         m_drive.ZeroHeading();
     //   },

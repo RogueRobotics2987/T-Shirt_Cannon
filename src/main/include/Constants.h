@@ -93,6 +93,7 @@ constexpr double kPRearRightVel = 0.5;
 }  // namespace DriveConstants
 
 namespace ModuleConstants {
+constexpr double wheelOffset = 89.65;
 constexpr int kEncoderCPR = 1024;
 constexpr double kWheelDiameterMeters = .102;
 constexpr double kDriveEncoderDistancePerPulse =

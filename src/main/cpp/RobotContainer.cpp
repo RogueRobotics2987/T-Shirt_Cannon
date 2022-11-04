@@ -31,6 +31,7 @@ RobotContainer::RobotContainer() {
   // Configure the button bindings
   ConfigureButtonBindings();
   m_drive.ZeroHeading();
+  frc::SmartDashboard::PutNumber("safeX", 0.0);
 
   // Set up default drive command
   m_Actuator.SetDefaultCommand(frc2::RunCommand(
@@ -56,14 +57,14 @@ RobotContainer::RobotContainer() {
           frc::SmartDashboard::PutNumber("Left Hand X", m_driverController.GetZ());
         
         
-        
-        double safeX = m_driverController.GetX();
+        double safeX = frc::SmartDashboard::GetNumber("safeX", 0.0);
+        // double safeX = m_driverController.GetX();
         if(fabs(safeX)<.225) {
             safeX=0;}
-        double safeY =  m_driverController.GetY();
+        double safeY = 0.0; // m_driverController.GetY();
         if(fabs(safeY)<.225) { 
             safeY=0;}
-        double safeRot = m_driverController.GetZ();
+        double safeRot = 0.0; // m_driverController.GetZ();
         if(fabs(safeRot)<.24) {
             safeRot=0;}
         
@@ -94,54 +95,70 @@ void RobotContainer::ConfigureButtonBindings() {
       
 }
 
-// frc2::Command* RobotContainer::GetAutonomousCommand() {
-//   // Set up config for trajectory
-//   frc::TrajectoryConfig config(AutoConstants::kMaxSpeed,
-//                                AutoConstants::kMaxAcceleration);
-//   // Add kinematics to ensure max speed is actually obeyed
-//   config.SetKinematics(m_drive.kDriveKinematics);
+frc2::Command* RobotContainer::GetAutonomousCommand() {
+  // Set up config for trajectory
+  frc::TrajectoryConfig config(AutoConstants::kMaxSpeed,
+                               AutoConstants::kMaxAcceleration);
+  // Add kinematics to ensure max speed is actually obeyed
+  config.SetKinematics(m_drive.kDriveKinematics);
 
-//   // An example trajectory to follow.  All units in meters.
-//   auto exampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
-//       // Start at the origin facing the +X direction
-//       frc::Pose2d(0_m, 0_m, frc::Rotation2d(0_deg)),
-//       // Pass through these two interior waypoints, making an 's' curve path
-//       {frc::Translation2d(1_m, 1_m), frc::Translation2d(2_m, -1_m)},
-//       // End 3 meters straight ahead of where we started, facing forward
-//       frc::Pose2d(3_m, 0_m, frc::Rotation2d(0_deg)),
-//       // Pass the config
-//       config);
+  // An example trajectory to follow.  All units in meters.
+  auto exampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
+      // Start at the origin facing the +X direction
+      frc::Pose2d(0_m, 0_m, frc::Rotation2d(0_deg)),
+      // Pass through these two interior waypoints, making an 's' curve path
+      {frc::Translation2d(1_m, 1_m), frc::Translation2d(2_m, -1_m)},
+      // End 3 meters straight ahead of where we started, facing forward
+      frc::Pose2d(3_m, 0_m, frc::Rotation2d(0_deg)),
+      // Pass the config
+      config);
 
-//   frc::ProfiledPIDController<units::radians> thetaController{
-//       AutoConstants::kPThetaController, 0, 0,
-//       AutoConstants::kThetaControllerConstraints};
+  auto straightLineTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
+      // Start at the origin facing the +X direction
+      frc::Pose2d(0_m, 0_m, frc::Rotation2d(0_deg)),
+      // Pass through these two interior waypoints, making an 's' curve path
+      {frc::Translation2d(1_m, 0_m)},
+      // End 3 meters straight ahead of where we started, facing forward
+      frc::Pose2d(2_m, 0_m, frc::Rotation2d(0_deg)),
+      // Pass the config
+      config);
 
-//   thetaController.EnableContinuousInput(units::radian_t(-wpi::numbers::pi),
-//                                         units::radian_t(wpi::numbers::pi));
+  frc::ProfiledPIDController<units::radians> thetaController{
+      AutoConstants::kPThetaController, 0, 0,
+      AutoConstants::kThetaControllerConstraints};
 
-//   frc2::SwerveControllerCommand<4> swerveControllerCommand(
-//       exampleTrajectory, [this]() { return m_drive.GetPose(); },
+  thetaController.EnableContinuousInput(units::radian_t(-wpi::numbers::pi),
+                                        units::radian_t(wpi::numbers::pi));
 
-//       m_drive.kDriveKinematics,
+  frc2::SwerveControllerCommand<4> swerveControllerCommand(
+      // exampleTrajectory, [this]() { return m_drive.GetPose(); },
+      straightLineTrajectory, [this]() { return m_drive.GetPose(); },
 
-//       frc2::PIDController(AutoConstants::kPXController, 0, 0),
-//       frc2::PIDController(AutoConstants::kPYController, 0, 0), thetaController,
+      m_drive.kDriveKinematics,
 
-//       [this](auto moduleStates) { m_drive.SetModuleStates(moduleStates); },
+      frc2::PIDController(AutoConstants::kPXController, 0, 0),
+      frc2::PIDController(AutoConstants::kPYController, 0, 0), 
+      thetaController,
 
-//       {&m_drive});
+      [this](auto moduleStates) { m_drive.SetModuleStates(moduleStates); },
 
-//   // Reset odometry to the starting pose of the trajectory.
-//   m_drive.ResetOdometry(exampleTrajectory.InitialPose());
+      {&m_drive});
 
-//   // no auto
-//   return new frc2::SequentialCommandGroup(
-//       std::move(swerveControllerCommand), std::move(swerveControllerCommand),
-//       frc2::InstantCommand(
-//           [this]() {
-//             m_drive.Drive(units::meters_per_second_t(0),
-//                           units::meters_per_second_t(0),
-//                           units::radians_per_second_t(0), false);
-//           },
-//           {}));
-// }
+  // Reset odometry to the starting pose of the trajectory.
+  // m_drive.ResetOdometry(exampleTrajectory.InitialPose());
+    m_drive.ResetOdometry(straightLineTrajectory.InitialPose());
+
+
+  // no auto
+  frc2::SequentialCommandGroup* evan = new frc2::SequentialCommandGroup(
+      // std::move(swerveControllerCommand), std::move(swerveControllerCommand),
+      std::move(swerveControllerCommand),
+      frc2::InstantCommand(
+          [this]() {
+            m_drive.Drive(units::meters_per_second_t(0),
+                          units::meters_per_second_t(0),
+                          units::radians_per_second_t(0), false);
+          },
+          {}));
+  return evan;
+}

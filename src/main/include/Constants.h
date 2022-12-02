@@ -96,11 +96,15 @@ constexpr double kPRearRightVel = 0.5;
 
 namespace ModuleConstants {
 constexpr double wheelOffset = 89.65;
-constexpr int kEncoderCPR = 1024;
-constexpr double kWheelDiameterMeters = 0.0762;
+constexpr int kEncoderCPR = 42;
+// constexpr double kWheelDiameterMeters = 0.0762; // 3 inch wheels
+constexpr double kWheelDiameterMeters = 0.0984; // 3.805 inch wheels
 constexpr double kDriveEncoderDistancePerPulse =
     // Assumes the encoders are directly mounted on the wheel shafts
     (kWheelDiameterMeters * wpi::numbers::pi) / static_cast<double>(kEncoderCPR);
+
+    // gear ratio is 8.16:1
+    // 6.86 is other ration
 
 constexpr double kTurningEncoderDistancePerPulse =
     // Assumes the encoders are directly mounted on the wheel shafts
@@ -117,6 +121,7 @@ using radians_per_second_squared_t =
                          units::inverse<units::squared<units::second>>>;
 
 constexpr auto kMaxSpeed = units::meters_per_second_t(1);
+// constexpr auto kMaxSpeed = units::meters_per_second_t(10000);
 constexpr auto kMaxAcceleration = units::meters_per_second_squared_t(1);
 constexpr auto kMaxAngularSpeed = units::radians_per_second_t(3.142 * 2);
 constexpr auto kMaxAngularAcceleration =

@@ -65,8 +65,12 @@ DriveSubsystem::DriveSubsystem()
         kRearRightTurningEncoderReversed
       },
 
-      m_odometry{kDriveKinematics, m_gyro.GetRotation2d()} {}
-      //frc::Pose2d(frc::Translation2d(), frc::Rotation2d(units::degree_t(90)))
+      m_odometry{kDriveKinematics, m_gyro.GetRotation2d()} {
+
+        frc::SmartDashboard::PutData("Field", &m_field);
+
+      }
+      //frc::Pose2d(frc::Translation2d(), frc::Rotation2d(units::degree_t(90))) 
 
 void DriveSubsystem::Periodic() {
   // Implementation of subsystem periodic method goes here.
@@ -74,9 +78,18 @@ void DriveSubsystem::Periodic() {
                     m_rearLeft.GetState(), m_frontRight.GetState(),
                     m_rearRight.GetState());
 
+                    //example of odometry update that conflicts with our code
+                    /* 
+                      m_odometry.Update(m_gyro.GetRotation2d(),
+                    {m_frontLeft.GetPosition(), m_frontRight.GetPosition(),
+                     m_backLeft.GetPosition(), m_backRight.GetPosition()});
+                    */
+
   frc::SmartDashboard::PutNumber("Odometry x", double(m_odometry.GetPose().X()));
   frc::SmartDashboard::PutNumber("Odometry y", double(m_odometry.GetPose().Y()));
   frc::SmartDashboard::PutNumber("Odometry Rotation", double(m_odometry.GetPose().Rotation().Radians()));
+
+  m_field.SetRobotPose(m_odometry.GetPose());
   
 }
 

@@ -4,10 +4,13 @@
 
 #pragma once
 
+#include <AHRS.h>
 #include <frc/ADXRS450_Gyro.h>
 #include <frc/Encoder.h>
 #include <frc/motorcontrol/PWMVictorSPX.h>
 #include <frc/drive/MecanumDrive.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/smartdashboard/Field2d.h>
 #include <frc/geometry/Pose2d.h>
 #include <frc/geometry/Rotation2d.h>
 #include <frc/interfaces/Gyro.h>
@@ -15,7 +18,6 @@
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <frc/kinematics/SwerveDriveOdometry.h>
 #include <frc2/command/SubsystemBase.h>
-#include <AHRS.h>
 
 
 #include "Constants.h"
@@ -100,8 +102,8 @@ class DriveSubsystem : public frc2::SubsystemBase {
       frc::Translation2d(kWheelBase / 2, -kTrackWidth / 2),
       frc::Translation2d(-kWheelBase / 2, kTrackWidth / 2),
       frc::Translation2d(-kWheelBase / 2, -kTrackWidth / 2)};
-
- private:
+ 
+private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 
@@ -116,4 +118,17 @@ class DriveSubsystem : public frc2::SubsystemBase {
   // Odometry class for tracking robot pose
   // 4 defines the number of modules
   frc::SwerveDriveOdometry<4> m_odometry;
+
+    frc::Field2d m_field;
+
+    //TODO
+    //never stated wheel locations from center of robot
+    //Example code from documentation
+
+    //frc::Translation2d m_frontLeftLocation{+0.381_m, +0.381_m};
+    //frc::Translation2d m_frontRightLocation{+0.381_m, -0.381_m};
+    //frc::Translation2d m_backLeftLocation{-0.381_m, +0.381_m};
+    //frc::Translation2d m_backRightLocation{-0.381_m, -0.381_m};
+
+
 };

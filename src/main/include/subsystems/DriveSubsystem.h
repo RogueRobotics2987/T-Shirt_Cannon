@@ -55,7 +55,11 @@ class DriveSubsystem : public frc2::SubsystemBase {
   /**
    * Sets the drive SpeedControllers to a power from -1 to 1.
    */
+<<<<<<< HEAD
   void SetModuleStates(wpi::array<frc::SwerveModuleState, 4> desiredStates);
+=======
+  void SetModuleStates(std::array<frc::SwerveModuleState, 4> desiredStates);
+>>>>>>> e582cee2fb920784ccd9939faf305c4dd44edc92
 
   /**
    * Returns the heading of the robot.

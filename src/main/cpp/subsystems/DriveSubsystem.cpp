@@ -8,6 +8,7 @@
 #include <units/angle.h>
 #include <units/angular_velocity.h>
 #include <units/velocity.h>
+#include <math.h>
 
 #include "Constants.h"
 
@@ -72,7 +73,7 @@ DriveSubsystem::DriveSubsystem()
       }
       //frc::Pose2d(frc::Translation2d(), frc::Rotation2d(units::degree_t(90))) 
 
-void DriveSubsystem::Periodic() {
+  void DriveSubsystem::Periodic() {
   // Implementation of subsystem periodic method goes here.
   m_odometry.Update(m_gyro.GetRotation2d(), m_frontLeft.GetState(),
                     m_rearLeft.GetState(), m_frontRight.GetState(),
@@ -108,11 +109,32 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
 
   frc::SmartDashboard::PutNumber("Motor Speed - Front Left", double(fl.speed));
   frc::SmartDashboard::PutNumber("Motor Angle - Front Left", double(fl.angle.Degrees()));
+  fl.angle.Degrees();
+  m_frontLeft.GetState().angle.Degrees();
+  frc::SmartDashboard::PutNumber("Desired angle",(double)(m_frontLeft.GetState().angle.Degrees())%360);
+   if (fabs((float)(fl.angle.Degrees() - m_frontLeft.GetState().angle.Degrees())) < 5){
+    m_frontLeft.SetDesiredState(fl);
+    m_frontRight.SetDesiredState(fr);
+    m_rearLeft.SetDesiredState(bl);
+    m_rearRight.SetDesiredState(br);
 
-  m_frontLeft.SetDesiredState(fl);
-  m_frontRight.SetDesiredState(fr);
-  m_rearLeft.SetDesiredState(bl);
-  m_rearRight.SetDesiredState(br);
+   }
+  
+
+   else{
+    fl.speed = (units::velocity::meters_per_second_t)(0);
+    fr.speed = (units::velocity::meters_per_second_t)(0);
+    bl.speed = (units::velocity::meters_per_second_t)(0);
+    br.speed = (units::velocity::meters_per_second_t)(0);
+
+    m_frontLeft.SetDesiredState(fl);
+    m_frontRight.SetDesiredState(fr);
+    m_rearLeft.SetDesiredState(bl);
+    m_rearRight.SetDesiredState(br);
+  }
+
+
+  
 }
 
 void DriveSubsystem::SetModuleStates(

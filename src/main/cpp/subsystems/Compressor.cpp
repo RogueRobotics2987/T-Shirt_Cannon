@@ -6,7 +6,7 @@ CompressorObject::CompressorObject() {
 // This method will be called once per scheduler run
 void CompressorObject::Periodic() {
         if (debugCompressorEnabled){
-        bool pressureSwitch = phCompressor.GetPressureSwitchValue();
+        // bool pressureSwitch = phCompressor.GetPressureSwitchValue();
         isEnabled = phCompressor.Enabled(); //checks if the compressor is enabled
         // commented out to test, 2/17
         //frc::SmartDashboard::PutBoolean("Compressor enabled", isEnabled);

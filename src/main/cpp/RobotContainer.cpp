@@ -36,13 +36,13 @@ RobotContainer::RobotContainer() {
   // Set up default drive command
   m_Actuator.SetDefaultCommand(frc2::RunCommand(
   [this]{
-    m_driverController.GetPOV();
-    frc::SmartDashboard::PutNumber("My POV Value is ", m_driverController.GetPOV());
-  if (m_driverController.GetPOV()==0){
+    m_Xbox.GetPOV();
+    frc::SmartDashboard::PutNumber("My POV Value is ", m_Xbox.GetPOV());
+  if (m_Xbox.GetPOV()==0){
     m_Actuator.Extend();
-  } else if (m_driverController.GetPOV()==180){
+  } else if (m_Xbox.GetPOV()==180){
     m_Actuator.Retract();
-  } else if (m_driverController.GetPOV()==-1){
+  } else if (m_Xbox.GetPOV()==-1){
     m_Actuator.Neutral();
   }
   },
@@ -50,44 +50,40 @@ RobotContainer::RobotContainer() {
   m_Compressor.SetDefaultCommand(beginCompressor(&m_Compressor));
   m_Shooter.SetDefaultCommand(ShooterSafe(&m_Shooter));
   m_drive.SetDefaultCommand(frc2::RunCommand(
-      [this] {
-        //   std::cout << "sea out in robot container" << std::endl;
-          frc::SmartDashboard::PutNumber("Left Hand Y", m_driverController.GetX());
-          frc::SmartDashboard::PutNumber("Right Hand Y", m_driverController.GetY());
-          frc::SmartDashboard::PutNumber("Left Hand X", m_driverController.GetZ());
-        
-        
-        double safeX = frc::SmartDashboard::GetNumber("safeX", 0.0);
-        // double safeX = m_driverController.GetX();
-        if(fabs(safeX)<.225) {
-            safeX=0;}
-        double safeY = 0.0; // m_driverController.GetY();
-        if(fabs(safeY)<.225) { 
-            safeY=0;}
-        double safeRot = 0.0; // m_driverController.GetZ();
-        if(fabs(safeRot)<.24) {
-            safeRot=0;}
-        
-        // std::cout << "Sam Debug" << safeX << "," << safeY << "," << safeRot << std::endl;
-        
-        m_drive.Drive(units::meters_per_second_t(
-                         -safeY),
-                      units::meters_per_second_t(
-                         -safeX),
-                      units::radians_per_second_t(
-                         -safeRot),
-                      true);
-        // m_drive.Drive(units::meters_per_second_t(0),
-        // units::meters_per_second_t(1),
-        // units::radians_per_second_t(0),
-        // false);
-      },
-      {&m_drive}));
+    [this] {
+      bool noJoystick = false;
+      double safeX = Deadzone(m_Xbox.GetLeftX());
+      double safeY =  Deadzone(m_Xbox.GetLeftY());
+      double safeRot = Deadzone(m_Xbox.GetRightX());
+      bool fieldOrientated; 
+
+      if (m_Xbox.GetRawAxis(3)> 0.15){
+        fieldOrientated = false;
+      }
+      if (m_Xbox.GetRawAxis(3)< 0.15){
+        fieldOrientated = true;
+      }
+      if((safeX == 0) && (safeY == 0) && (safeRot == 0)) {
+        noJoystick = true;
+      }
+      m_drive.Drive(units::meters_per_second_t(
+                    -safeY * AutoConstants::kMaxSpeed),
+                    units::meters_per_second_t(
+                    -safeX * AutoConstants::kMaxSpeed),
+                    units::radians_per_second_t(
+                    -safeRot * std::numbers::pi * 1.5),
+                    fieldOrientated,
+                    noJoystick);
+      // m_drive.Drive(units::meters_per_second_t(0),
+      // units::meters_per_second_t(1),
+      // units::radians_per_second_t(0),
+      // false);
+    }, {&m_drive}));
 }
 
 void RobotContainer::ConfigureButtonBindings() {
-    frc2::JoystickButton(&m_driverController, 2).WhenPressed(ResetHeading(&m_drive));
-    frc2::JoystickButton(&m_driverController, 12).WhenPressed(Shooter(&m_Shooter));
+    frc2::JoystickButton(&m_Xbox, 1).WhenPressed(ResetHeading(&m_drive));
+    frc2::JoystickButton(&m_Xbox, 2).WhenPressed(Shooter(&m_Shooter));
 //       [this] {
 //         m_drive.ZeroHeading();
     //   },
@@ -127,8 +123,8 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
       AutoConstants::kPThetaController, 0, 0,
       AutoConstants::kThetaControllerConstraints};
 
-  thetaController.EnableContinuousInput(units::radian_t(-wpi::numbers::pi),
-                                        units::radian_t(wpi::numbers::pi));
+  thetaController.EnableContinuousInput(units::radian_t(-std::numbers::pi),
+                                        units::radian_t(std::numbers::pi));
 
   frc2::SwerveControllerCommand<4> swerveControllerCommand(
       // exampleTrajectory, [this]() { return m_drive.GetPose(); },
@@ -157,8 +153,21 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
           [this]() {
             m_drive.Drive(units::meters_per_second_t(0),
                           units::meters_per_second_t(0),
-                          units::radians_per_second_t(0), false);
+                          units::radians_per_second_t(0), false, false);
           },
           {}));
   return evan;
+}
+
+float RobotContainer::Deadzone(float x) {
+  if((x < 0.1) && (x > -0.1)) {
+    x=0;
+  }
+  else if(x >= 0.1) {
+    x = x - 0.1;
+  }
+  else if(x <= -0.1) {
+    x = x + 0.1;
+  }
+  return(x);
 }

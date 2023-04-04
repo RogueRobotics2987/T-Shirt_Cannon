@@ -5,7 +5,7 @@ CompressorObject::CompressorObject() {
     std::cout << "Created a Copressor Object" << std::endl;
 }
 CompressorObject::~CompressorObject(){
-    m_compressor->Stop();
+    // m_compressor->Stop();
     delete m_compressor;
 }
 
@@ -13,5 +13,5 @@ CompressorObject::~CompressorObject(){
 void CompressorObject::Periodic() {}
 
 void CompressorObject::startCompressor() {
-    m_compressor->Start();
+    // m_compressor->Start();
 }

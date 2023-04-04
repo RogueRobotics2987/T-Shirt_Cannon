@@ -47,7 +47,7 @@ RobotContainer::RobotContainer() {
   }
   },
   {&m_Actuator}));
-  m_Compressor.SetDefaultCommand(beginCompressor(&m_Compressor));
+  m_compressor.SetDefaultCommand(BeginCompressor(m_compressor));
   m_Shooter.SetDefaultCommand(ShooterSafe(&m_Shooter));
   m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
@@ -127,8 +127,8 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
       AutoConstants::kPThetaController, 0, 0,
       AutoConstants::kThetaControllerConstraints};
 
-  thetaController.EnableContinuousInput(units::radian_t(-wpi::numbers::pi),
-                                        units::radian_t(wpi::numbers::pi));
+  thetaController.EnableContinuousInput(units::radian_t(-std::numbers::pi),
+                                        units::radian_t(std::numbers::pi));
 
   frc2::SwerveControllerCommand<4> swerveControllerCommand(
       // exampleTrajectory, [this]() { return m_drive.GetPose(); },

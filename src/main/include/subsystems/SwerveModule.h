@@ -11,7 +11,7 @@
 #include <frc/geometry/Rotation2d.h>
 #include <frc/kinematics/SwerveModuleState.h>
 #include <frc/trajectory/TrapezoidProfile.h>
-#include <wpi/numbers>
+#include <numbers>
 #include "rev/CANSparkMax.h"
 #include "rev/CANEncoder.h"
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -47,11 +47,11 @@ class SwerveModule {
   // meters per second squared.
 
   static constexpr units::radians_per_second_t kModuleMaxAngularVelocity =
-      units::radians_per_second_t(wpi::numbers::pi * 8.0);  // radians per second
+      units::radians_per_second_t(std::numbers::pi * 8.0);  // radians per second
   static constexpr units::unit_t<radians_per_second_squared_t>
       kModuleMaxAngularAcceleration =
           units::unit_t<radians_per_second_squared_t>(
-              wpi::numbers::pi * 16.0);  // radians per second squared
+              std::numbers::pi * 16.0);  // radians per second squared
 
 //   frc::Spark m_driveMotor;
 //   frc::Spark m_turningMotor;

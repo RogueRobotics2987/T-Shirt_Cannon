@@ -5,7 +5,7 @@
 #include "subsystems/SwerveModule.h"
 
 #include <frc/geometry/Rotation2d.h>
-#include <wpi/numbers>
+#include <numbers>
 
 #include "Constants.h"
 #include <string>
@@ -28,15 +28,15 @@
 //       ModuleConstants::kDriveEncoderDistancePerPulse);
 
 //   // Set the distance (in this case, angle) per pulse for the turning encoder.
-//   // This is the the angle through an entire rotation (2 * wpi::numbers::pi)
+//   // This is the the angle through an entire rotation (2 * std::numbers::pi)
 //   // divided by the encoder resolution.
 //   m_turningEncoder.SetDistancePerPulse(
 //       ModuleConstants::kTurningEncoderDistancePerPulse);
 
 //   // Limit the PID Controller's input range between -pi and pi and set the input
 //   // to be continuous.
-//   m_turningPIDController.EnableContinuousInput(units::radian_t(-wpi::numbers::pi),
-//                                                units::radian_t(wpi::numbers::pi));
+//   m_turningPIDController.EnableContinuousInput(units::radian_t(-std::numbers::pi),
+//                                                units::radian_t(std::numbers::pi));
 // }
 
 SwerveModule::SwerveModule(int m_MotorController, rev::SparkMaxRelativeEncoder::Type m_EncoderType, int m_counts_per_rev, 
@@ -77,14 +77,14 @@ int m_MotorControllerTurning,
       ModuleConstants::kDriveEncoderDistancePerPulse);
 
   // Set the distance (in this case, angle, radians) per pulse for the turning encoder.
-  // This is the the angle through an entire rotation (2 * wpi::numbers::pi)
+  // This is the the angle through an entire rotation (2 * std::numbers::pi)
   // divided by the encoder resolution.
   samTurningEncoder->ConfigFeedbackCoefficient(
   0.00153980788, "Radians", ctre::phoenix::sensors::SensorTimeBase());
   // Limit the PID Controller's input range between -pi and pi and set the input
   // to be continuous.
-  m_turningPIDController.EnableContinuousInput(units::radian_t(-wpi::numbers::pi),
-                                               units::radian_t(wpi::numbers::pi));
+  m_turningPIDController.EnableContinuousInput(units::radian_t(-std::numbers::pi),
+                                               units::radian_t(std::numbers::pi));
   m_drivePIDController.SetP(
     frc::SmartDashboard::PutNumber("Enter P Value" + std::to_string(samDriveMotor->GetDeviceId()),
      ModuleConstants::kPModuleDriveController));

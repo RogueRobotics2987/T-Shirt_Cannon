@@ -12,7 +12,7 @@
 #include <units/time.h>
 #include <units/velocity.h>
 #include <units/voltage.h>
-#include <wpi/numbers>
+#include <numbers>
 // #include "rev/CANEncoder.h"
 #include "rev/SparkMaxRelativeEncoder.h"
 
@@ -100,11 +100,11 @@ constexpr int kEncoderCPR = 1024;
 constexpr double kWheelDiameterMeters = .102;
 constexpr double kDriveEncoderDistancePerPulse =
     // Assumes the encoders are directly mounted on the wheel shafts
-    (kWheelDiameterMeters * wpi::numbers::pi) / static_cast<double>(kEncoderCPR);
+    (kWheelDiameterMeters *std::numbers::pi) / static_cast<double>(kEncoderCPR);
 
 constexpr double kTurningEncoderDistancePerPulse =
     // Assumes the encoders are directly mounted on the wheel shafts
-    (wpi::numbers::pi * 2) / static_cast<double>(kEncoderCPR);
+    (std::numbers::pi * 2) / static_cast<double>(kEncoderCPR);
 
 constexpr double kPModuleTurningController = 0.5;
 constexpr double kPModuleDriveController = 8;

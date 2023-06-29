@@ -82,8 +82,8 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureButtonBindings() {
-    frc2::JoystickButton(&m_Xbox, 1).OnTrue(m_drive.ZeroHeading());
-    // frc2::JoystickButton(&m_Xbox, 2).OnTrue(Shooter(&m_Shooter));
+    frc2::JoystickButton(&m_Xbox, 2).OnTrue(m_drive.ZeroHeading());
+    frc2::JoystickButton(&m_Xbox, 1).OnTrue(shootCmd);
 //       [this] {
 //         m_drive.ZeroHeading();
     //   },
@@ -170,4 +170,8 @@ float RobotContainer::Deadzone(float x) {
     x = x + 0.1;
   }
   return(x);
+}
+
+RobotContainer::~RobotContainer(){
+  delete shootCmd;
 }

@@ -37,6 +37,7 @@
 class RobotContainer {
  public:
   RobotContainer();
+  ~RobotContainer();
 
   float Deadzone(float x);
 
@@ -54,6 +55,7 @@ class RobotContainer {
   ShooterSubsystem m_Shooter;
   ActuatorSubsystem m_Actuator;
   CompressorObject m_compressor;
+  frc2::Command* shootCmd = new Shooter(&m_Shooter);
 
   // The chooser for the autonomous routines
   frc::SendableChooser<frc2::Command*> m_chooser;

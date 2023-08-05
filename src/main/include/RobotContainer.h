@@ -26,6 +26,7 @@
 #include "commands/Shooter.h"
 #include <iostream>
 #include "commands/ShooterSafe.h"
+#include "subsystems/HornSubsystem.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -54,6 +55,8 @@ class RobotContainer {
   ShooterSubsystem m_Shooter;
   ActuatorSubsystem m_Actuator;
   CompressorObject m_compressor;
+
+  HornSubsystem m_Horn;
 
   // The chooser for the autonomous routines
   frc::SendableChooser<frc2::Command*> m_chooser;

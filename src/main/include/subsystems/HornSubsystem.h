@@ -27,8 +27,8 @@ class HornSubsystem : public frc2::SubsystemBase {
   //void Open();
   //void Close();
 
-  frc2::CommandPtr HornSubsystem::RunHorn();
-  frc2::CommandPtr HornSubsystem::StopHorn();
+  frc2::CommandPtr RunHorn();
+  frc2::CommandPtr StopHorn();
 
   frc::DoubleSolenoid* HonkSolenoid = nullptr;
   bool activateHorn = false;

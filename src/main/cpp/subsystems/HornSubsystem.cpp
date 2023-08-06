@@ -2,7 +2,7 @@
 
 
 HornSubsystem::HornSubsystem(){
-    HonkSolenoid = new frc::DoubleSolenoid(frc::PneumaticsModuleType::REVPH, 14, 15);
+    HonkSolenoid = new frc::DoubleSolenoid(frc::PneumaticsModuleType::REVPH, 13, 15);
 }
 
 void HornSubsystem::Periodic() {
@@ -15,12 +15,12 @@ void HornSubsystem::Periodic() {
 }
 
 frc2::CommandPtr HornSubsystem::RunHorn(){
-  return this->RunOnce(
+  return this->Run(
       [this] { activateHorn = true; });
 }
 
 frc2::CommandPtr HornSubsystem::StopHorn(){
-    return this->RunOnce(
+    return this->Run(
         [this] {activateHorn = false;});
 }
 
